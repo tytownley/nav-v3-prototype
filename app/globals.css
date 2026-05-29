@@ -1,0 +1,265 @@
+@import "tailwindcss";
+@source "../dbui/src/components/**/*.tsx";
+@source "../dbui-shells/src/**/*.tsx";
+
+@theme inline {
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height, var(--accordion-panel-height, auto)); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height, var(--accordion-panel-height, auto)); }
+    to { height: 0; }
+  }
+}
+
+@custom-variant data-open {
+  &:where([data-state="open"]), &:where([data-open]:not([data-open="false"])) { @slot; }
+}
+@custom-variant data-closed {
+  &:where([data-state="closed"]), &:where([data-closed]:not([data-closed="false"])) { @slot; }
+}
+@custom-variant data-checked {
+  &:where([data-state="checked"]), &:where([data-checked]:not([data-checked="false"])) { @slot; }
+}
+@custom-variant data-unchecked {
+  &:where([data-state="unchecked"]), &:where([data-unchecked]:not([data-unchecked="false"])) { @slot; }
+}
+@custom-variant data-selected {
+  &:where([data-selected="true"]) { @slot; }
+}
+@custom-variant data-disabled {
+  &:where([data-disabled="true"]), &:where([data-disabled]:not([data-disabled="false"])) { @slot; }
+}
+@custom-variant data-active {
+  &:where([data-state="active"]), &:where([data-active]:not([data-active="false"])) { @slot; }
+}
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) { @slot; }
+}
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) { @slot; }
+}
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@theme inline {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 999px;
+}
+
+/* ─── Dark mode (default) ─────────────────────────────────────── */
+:root {
+  --n0: #0A0A0B;
+  --n1: #121214;
+  --n2: #1A1A1C;
+  --n3: #222224;
+  --n4: #2C2C2E;
+  --n5: #393939;
+  --n6: #4B4B4D;
+  --n7: #69696B;
+  --n8: #8A8A8C;
+  --n9: #ABABAE;
+  --n10: #C7C7CA;
+  --n11: #E0E0E3;
+  --n12: #F1F1F4;
+
+  --overlay: 228, 228, 232;
+
+  --danger: #C44040;
+  --warning: #B8892E;
+  --success: #30A050;
+  --danger-fg: #EB6B6B;
+  --warning-fg: #E8B84A;
+  --success-fg: #4CD964;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+
+  --duration-instant: 50ms;
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+
+  --frame-bg: #f3f3f3;
+}
+
+/* ─── Light mode ──────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --n0: #0A0A0B;
+  --n1: #121214;
+  --n2: #1A1A1C;
+  --n3: #222224;
+  --n4: #2C2C2E;
+  --n5: #393939;
+  --n6: #4B4B4D;
+  --n7: #69696B;
+  --n8: #8A8A8C;
+  --n9: #ABABAE;
+  --n10: #C7C7CA;
+  --n11: #E0E0E3;
+  --n12: #F1F1F4;
+
+  --overlay: 228, 228, 232;
+
+  --danger-fg: #EB6B6B;
+  --warning-fg: #E8B84A;
+  --success-fg: #4CD964;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+
+  --frame-bg: #0A0A0B;
+}
+
+[data-theme="light"] {
+  --n0: #FFFFFF;
+  --n1: #F8F7F6;
+  --n2: #F0EFEE;
+  --n3: #E6E5E3;
+  --n4: #D9D8D6;
+  --n5: #C5C4C2;
+  --n6: #A1A09E;
+  --n7: #797876;
+  --n8: #5D5C5A;
+  --n9: #47464A;
+  --n10: #313034;
+  --n11: #1F1E22;
+  --n12: #0F0E12;
+
+  --overlay: 14, 14, 18;
+
+  --danger: #D04040;
+  --warning: #B8892E;
+  --success: #28A745;
+  --danger-fg: #D03030;
+  --warning-fg: #A87A0A;
+  --success-fg: #1CA038;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 2px 6px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.10);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.06), 0 12px 40px rgba(0,0,0,0.14);
+
+  --frame-bg: #f3f3f3;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes chat-thinking-shimmer {
+  0%, 100% { color: var(--n8); }
+  50% { color: var(--n11); }
+}
+.chat-thinking-shimmer { animation: chat-thinking-shimmer 2s ease-in-out infinite; }
+
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.home-animate-in {
+  opacity: 0;
+  animation: fade-slide-up 400ms ease-out forwards;
+}
+
+.home-chip-animate {
+  opacity: 0;
+  animation: fade-slide-up 350ms ease-out forwards;
+}
+
+@keyframes card-shimmer {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  40% { transform: translateX(200%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.card-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, var(--shimmer-color, rgba(255,255,255,0.03)) 50%, transparent 100%);
+  animation: card-shimmer 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@layer base {
+  * { border-color: rgba(var(--overlay), 0.08); }
+  body {
+    background: var(--n1);
+    color: var(--n11);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.home-input::placeholder {
+  color: var(--n7);
+}
+
+.nav-scrollbar,
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.nav-scrollbar:hover,
+.chat-scrollbar:hover { scrollbar-color: var(--n5) transparent; }
+.nav-scrollbar::-webkit-scrollbar,
+.chat-scrollbar::-webkit-scrollbar { width: 6px; }
+.nav-scrollbar::-webkit-scrollbar-track,
+.chat-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.nav-scrollbar::-webkit-scrollbar-thumb,
+.chat-scrollbar::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+.nav-scrollbar:hover::-webkit-scrollbar-thumb,
+.chat-scrollbar:hover::-webkit-scrollbar-thumb { background: var(--n5); }
+.nav-scrollbar::-webkit-scrollbar-thumb:hover,
+.chat-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--n6); }
+
+/* DS scrollbar utilities */
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: rgba(var(--overlay),0.12) transparent; }
+.scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(var(--overlay),0.10); border-radius: 9999px; transition: background 0.1s; }
+.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(var(--overlay),0.20); }
+.scrollbar-thin::-webkit-scrollbar-corner { background: transparent; }
+
+.scrollbar-auto-hide::-webkit-scrollbar-thumb { background: transparent; transition: background 0.15s; }
+.scrollbar-auto-hide:hover::-webkit-scrollbar-thumb { background: rgba(var(--overlay),0.10); }
+
+/* Sparkle + popover animations */
+@keyframes sparkle-scale-in { from { transform: scale(0); } to { transform: scale(1); } }
+.sparkle-scale-in { animation: sparkle-scale-in 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+@keyframes sparkle-fade-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 0.7; transform: scale(1); } }
+.sparkle-fade-in { animation: sparkle-fade-in 0.2s ease-out forwards; }
+
+@keyframes popover-fade-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.popover-fade-in { animation: popover-fade-in 0.15s ease-out forwards; }
+
+/* Command Palette */
+@keyframes cmd-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cmd-panel-in { from { opacity: 0; transform: scale(0.96) translateY(-8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+/* Connector strip — slides down from beneath the input */
+@keyframes connector-strip-in {
+  from { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to { opacity: 1; max-height: 48px; }
+}
+.connector-strip-animate {
+  animation: connector-strip-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both;
+}
